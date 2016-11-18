@@ -9,8 +9,17 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 // import the Symfony Console Application
 use Symfony\Component\Console\Application;
-use DidbotCmd\Commands\ConfigCommand;
 
-$app = new Application();
-$app->run();
+
+
+$cli = new Application();
+$cli->add(new DidbotCmd\Commands\AddCommand);
+$cli->add(new DidbotCmd\Commands\ConfigApiTokenCommand);
+$cli->add(new DidbotCmd\Commands\ConfigBaseUrlCommand);
+
+// Default to the AddDid command
+$did = new DidbotCmd\Commands\AddCommand;
+$cli->setDefaultCommand($did->getName());
+
+$cli->run();
 ?>
