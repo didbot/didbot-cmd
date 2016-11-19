@@ -12,7 +12,6 @@ use Symfony\Component\Console\Application;
 
 
 $env = DidbotCmd\Factories\EnvFactory::getEnv(__DIR__ . '/.env');
-$env->required(['API_TOKEN'])->notEmpty();
 $client = DidbotCmd\Factories\GuzzleFactory::getClient();
 
 $cli = new Application();
