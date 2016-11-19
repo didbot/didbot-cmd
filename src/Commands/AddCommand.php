@@ -7,15 +7,28 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Question\Question;
-use GuzzleHttp\Client;
-use Dotenv\Dotenv;
+use Symfony\Component\Console\Command\Command;
 
-class AddCommand extends BaseCommand
+class AddCommand extends Command
 {
-
+    /**
+     * @var \GuzzleHttp\Client
+     */
     protected $client;
 
+    /**
+     * AddCommand constructor.
+     * @param \GuzzleHttp\Client
+     */
+    public function __construct(\GuzzleHttp\Client $client)
+    {
+        parent::__construct();
+        $this->client = $client;
+    }
 
+    /**
+     *
+     */
     protected function configure()
     {
         $this->setName("add")
@@ -25,19 +38,13 @@ class AddCommand extends BaseCommand
                 ]);
     }
 
+    /**
+     * @param \Symfony\Component\Console\Input\InputInterface $input
+     * @param \Symfony\Component\Console\Output\OutputInterface $output
+     * @return void
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->env->required(['API_TOKEN'])->notEmpty();
-        $this->client = new Client([
-            'base_uri' => getenv('BASE_URL') ? getenv('BASE_URL') : 'https://didbot.com/api/1.0/',
-            'headers' => [
-                'Accept' => 'application/json',
-                'content-type' => 'application/json',
-                'Authorization' => 'Bearer ' . getenv('API_TOKEN'),
-            ]
-        ]);
-
-
         $helper = $this->getHelper('question');
 
         // Clear

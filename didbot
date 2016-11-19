@@ -11,15 +11,17 @@ require_once __DIR__ . '/vendor/autoload.php';
 use Symfony\Component\Console\Application;
 
 
+$env = DidbotCmd\Factories\EnvFactory::getEnv(__DIR__ . '/.env');
+$env->required(['API_TOKEN'])->notEmpty();
+$client = DidbotCmd\Factories\GuzzleFactory::getClient();
 
 $cli = new Application();
-$cli->add(new DidbotCmd\Commands\AddCommand);
-$cli->add(new DidbotCmd\Commands\ConfigApiTokenCommand);
-$cli->add(new DidbotCmd\Commands\ConfigBaseUrlCommand);
+$cli->add(new DidbotCmd\Commands\AddCommand($client));
+$cli->add(new DidbotCmd\Commands\ConfigApiTokenCommand($env));
+$cli->add(new DidbotCmd\Commands\ConfigBaseUrlCommand($env));
 
 // Default to the AddDid command
-$did = new DidbotCmd\Commands\AddCommand;
-$cli->setDefaultCommand($did->getName());
+$cli->setDefaultCommand('add');
 
 $cli->run();
 ?>
