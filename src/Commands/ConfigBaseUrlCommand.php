@@ -8,7 +8,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 
-class ConfigBaseUrlCommand extends Command
+class ConfigBaseUrlCommand extends BaseCommand
 {
     protected function configure()
     {

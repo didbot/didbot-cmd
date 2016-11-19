@@ -3,7 +3,6 @@
 namespace DidbotCmd\Commands;
 
 use Mockery\CountValidator\Exception;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -11,34 +10,11 @@ use Symfony\Component\Console\Question\Question;
 use GuzzleHttp\Client;
 use Dotenv\Dotenv;
 
-class AddCommand extends Command
+class AddCommand extends BaseCommand
 {
 
     protected $client;
 
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-
-        $env = new Dotenv(__DIR__ . '/../../');
-        $env->load();
-        $env->required(['API_TOKEN']);
-
-        $this->client = new Client([
-                'base_uri' => getenv('BASE_URL') ? getenv('BASE_URL') : 'https://didbot.com/api/1.0/',
-                'headers' => [
-                    'Accept' => 'application/json',
-                    'content-type' => 'application/json',
-                    'Authorization' => 'Bearer ' . getenv('API_TOKEN'),
-                ]
-        ]);
-
-    }
 
     protected function configure()
     {
@@ -51,6 +27,17 @@ class AddCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->env->required(['API_TOKEN'])->notEmpty();
+        $this->client = new Client([
+            'base_uri' => getenv('BASE_URL') ? getenv('BASE_URL') : 'https://didbot.com/api/1.0/',
+            'headers' => [
+                'Accept' => 'application/json',
+                'content-type' => 'application/json',
+                'Authorization' => 'Bearer ' . getenv('API_TOKEN'),
+            ]
+        ]);
+
+
         $helper = $this->getHelper('question');
 
         // Clear

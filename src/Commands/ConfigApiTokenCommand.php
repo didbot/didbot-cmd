@@ -8,7 +8,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 
-class ConfigApiTokenCommand extends Command
+class ConfigApiTokenCommand extends BaseCommand
 {
     protected function configure()
     {
@@ -18,6 +18,7 @@ class ConfigApiTokenCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        //
+        $token = $input->getArgument('API_TOKEN');
+        $this->setEnv('API_TOKEN', $token);
     }
 }
